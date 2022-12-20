@@ -90,7 +90,7 @@ function exchangeToken(code) {
     processTokenResponse(data);
 
     // clear search query params in the url
-    window.history.replaceState({}, document.title, '/');
+    window.history.replaceState("", document.title, window.location.toString().substring(0, window.location.toString().indexOf("?")));
   }).catch(handleError);
 }
 
@@ -302,7 +302,7 @@ function postSpotifySongs(id, tracks) {
 /*Spotify run*/
 
 const client_id = '72236ba6e9d740449f9128203ad489f6';
-const redirect_uri = 'https://set-operations-for-spotify.tylerghill.repl.co/'; // Your redirect uri
+const redirect_uri = 'https://tylergordonhill.com/set-operations-for-spotify'; // Your redirect uri
 
 let access_token = window.localStorage.getItem('access_token') || null;
 let refresh_token = window.localStorage.getItem('refresh_token') || null;

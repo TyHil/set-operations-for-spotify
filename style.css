@@ -264,10 +264,15 @@ button {
   align-items: center;
   cursor: pointer;
 }
+#setOperation {
+  flex: 1;
+  max-width: 10rem;
+}
 .playlistHolder.clicked, #setOperation.clicked {
   background-color: var(--dark2);
 }
 .playlistHolder > p, #setOperation > p {
+  text-align: center;
   margin: 1rem;
   font-size: 0.8em;
   color: var(--light2);
