@@ -96,8 +96,8 @@ function exchangeToken(code) {
 
 function handleError(error) {
   console.error(error);
-  if (error.message) {
-    createToast(error.message);
+  if (error.error && error.error.status && error.error.message) {
+    createToast(error.error.status + ': ' + error.error.message);
   } else {
     createToast(error);
   }
@@ -138,8 +138,8 @@ function processTokenResponse(data) {
 /*Spotify load user data*/
 
 function processTokenExpiration(date) {
-  setTimeout(function() {
-    fetch('https://accounts.spotify.com/api/token', {
+  function refreshToken() {
+    return fetch('https://accounts.spotify.com/api/token', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
@@ -150,7 +150,12 @@ function processTokenExpiration(date) {
         refresh_token,
       }),
     }).then(addThrowErrorToFetch).then(processTokenResponse).catch(handleError);
-  }, date - new Date().getTime());
+  }
+  if (date - new Date().getTime() <= 0) {
+    return refreshToken();
+  }
+  setTimeout(refreshToken, date - new Date().getTime());
+  return Promise.resolve();
 }
 
 function getSpotifyData(link, callback) {
@@ -320,9 +325,10 @@ if (code) {
   document.getElementById('login').remove();
   document.getElementById('loggedin').style.display = 'flex';
 
-  processTokenExpiration(expires_at);
-  getUserData();
-  getUserPlaylists();
+  processTokenExpiration(expires_at).then(() => {
+    getUserData();
+    getUserPlaylists();
+  }).catch(handleError);
 }
 
 //logout
