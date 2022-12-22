@@ -185,7 +185,7 @@ function getUserPlaylists(link = 'https://api.spotify.com/v1/me/playlists') {
       if (playlistData.tracks.total) {
         const playlist = document.createElement('div');
         playlist.classList.add('item');
-        playlist.tabindex = 0;
+        playlist.tabIndex = 0;
         const content = document.createElement('div');
         content.classList.add('content');
         content.dataset.id = playlistData.id;
@@ -345,7 +345,7 @@ document.getElementById('logout-button').addEventListener('click', function() {
 /* Masonry */
 
 document.body.addEventListener('keydown', function (e) {//enable enter while tabbing over spans
-  if ((e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') && document.activeElement !== null && document.activeElement.classList.contains('item')) {
+  if ((e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') && document.activeElement !== null && (document.activeElement.classList.contains('item') || document.activeElement.classList.contains('playlistHolder') || document.activeElement.id === 'setOperation')) {
     document.activeElement.click();
   }
 });
@@ -389,7 +389,7 @@ function createToast(text, permanent = 0, buttonText, onButtonClick, onClose) {
     });
   }
   let x = document.createElement('span');
-  x.tabindex = 0;
+  x.tabIndex = 0;
   x.classList.add('close');
   x.innerHTML = '&times;';
   x.addEventListener('click', close);
