@@ -470,7 +470,7 @@ for(let i = 0; i < operations.length; i++) {
     }
     const clonedNode = operations[i].cloneNode(true);
     clonedNode.removeAttribute('tabindex');
-    setOperation.append();
+    setOperation.append(clonedNode);
     setOperation.classList.remove('clicked');
     document.getElementById('operationPicker').style.display = 'none';
   });
@@ -496,19 +496,29 @@ document.getElementById('create').addEventListener('click', async function() {
         tracks = tracks1.filter(x => tracks2.includes(x));
         separator = '∩';
       }
-      const closeCreatingPlaylist = createToast('Creating playlist', 1);
-      const name1 = playlist1.getElementsByClassName('title')[0].innerText;
-      const name2 = playlist2.getElementsByClassName('title')[0].innerText;
-      postSpotifyPlaylist(name1 + ' ' + separator + ' ' + name2, 'This is a ' + setOperation.children[0].dataset.id + ' between ' + name1 + ' and ' + name2 + '.').then((playlist) => {
-        closeCreatingPlaylist();
-        const closeAddingTracks = createToast('Adding tracks', 1);
-        postSpotifySongs(playlist, tracks).then(() => {
-          closeAddingTracks();
-          createToast('Done', 0, 'Open', function() {
-            window.open('spotify:https://open.spotify.com/playlist/' + playlist, '_self');
-          });
+      if (!tracks.length) {
+        createToast('Empty playlist!');
+      } else {
+        const closeCreatingPlaylist = createToast('Creating playlist', 1);
+        let name1 = playlist1.getElementsByClassName('title')[0].innerText;
+        let name2 = playlist2.getElementsByClassName('title')[0].innerText;
+        if (name1.includes('-') || name1.includes('∪') || name1.includes('∩')) {
+          name1 = '(' + name1 + ')';
+        }
+        if (name2.includes('-') || name2.includes('∪') || name2.includes('∩')) {
+          name2 = '(' + name2 + ')';
+        }
+        postSpotifyPlaylist(name1 + ' ' + separator + ' ' + name2, 'This is a ' + setOperation.children[0].dataset.id + ' between ' + name1 + ' and ' + name2 + '.').then((playlist) => {
+          closeCreatingPlaylist();
+          const closeAddingTracks = createToast('Adding tracks', 1);
+          postSpotifySongs(playlist, tracks).then(() => {
+            closeAddingTracks();
+            createToast('Done', 0, 'Open', function() {
+              window.open('spotify:https://open.spotify.com/playlist/' + playlist, '_self');
+            });
+          }).catch(handleError);
         }).catch(handleError);
-      }).catch(handleError);
+      }
     }).catch(handleError);
   }
 });
