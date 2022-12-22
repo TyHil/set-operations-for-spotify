@@ -468,26 +468,28 @@ for(let i = 0; i < operations.length; i++) {
     while (setOperation.children[0]) {
       setOperation.children[0].remove();
     }
-    setOperation.append(operations[i].cloneNode(true));
+    const clonedNode = operations[i].cloneNode(true);
+    clonedNode.removeAttribute('tabindex');
+    setOperation.append();
     setOperation.classList.remove('clicked');
     document.getElementById('operationPicker').style.display = 'none';
   });
 }
 
 document.getElementById('create').addEventListener('click', async function() {
-  const playlist1 = document.getElementById('playlist1').children[0].dataset.id;
-  const setOperation = document.getElementById('setOperation').children[0].id;
-  const playlist2 = document.getElementById('playlist2').children[0].dataset.id;
-  if (playlist1 && setOperation && playlist2) {
+  const playlist1 = document.getElementById('playlist1');
+  const setOperation = document.getElementById('setOperation');
+  const playlist2 = document.getElementById('playlist2');
+  if (playlist1.children[0].dataset.id && setOperation.children[0].dataset.id && playlist2.children[0].dataset.id) {
     const closeGettingTracks = createToast('Getting tracks', 1);
-    Promise.all([getPlaylistSongs(playlist1), getPlaylistSongs(playlist2)]).then(([tracks1, tracks2]) => {
+    Promise.all([getPlaylistSongs(playlist1.children[0].dataset.id), getPlaylistSongs(playlist2.children[0].dataset.id)]).then(([tracks1, tracks2]) => {
       closeGettingTracks();
       let tracks = [];
       let separator = '';
-      if (setOperation === 'difference') {
+      if (setOperation.children[0].dataset.id === 'difference') {
         tracks = tracks1.filter(x => !tracks2.includes(x))
         separator = '-';
-      } else if (setOperation === 'union') {
+      } else if (setOperation.children[0].dataset.id === 'union') {
         tracks = [...new Set([...tracks1, ...tracks2])];
         separator = '∪';
       } else {
@@ -495,9 +497,9 @@ document.getElementById('create').addEventListener('click', async function() {
         separator = '∩';
       }
       const closeCreatingPlaylist = createToast('Creating playlist', 1);
-      const name1 = document.getElementById('playlist1').getElementsByClassName('title')[0].innerText;
-      const name2 = document.getElementById('playlist2').getElementsByClassName('title')[0].innerText;
-      postSpotifyPlaylist(name1 + ' ' + separator + ' ' + name2, 'This is a ' + setOperation + ' between ' + name1 + ' and ' + name2 + '.').then((playlist) => {
+      const name1 = playlist1.getElementsByClassName('title')[0].innerText;
+      const name2 = playlist2.getElementsByClassName('title')[0].innerText;
+      postSpotifyPlaylist(name1 + ' ' + separator + ' ' + name2, 'This is a ' + setOperation.children[0].dataset.id + ' between ' + name1 + ' and ' + name2 + '.').then((playlist) => {
         closeCreatingPlaylist();
         const closeAddingTracks = createToast('Adding tracks', 1);
         postSpotifySongs(playlist, tracks).then(() => {
