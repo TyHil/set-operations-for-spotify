@@ -345,7 +345,7 @@ document.getElementById('logout-button').addEventListener('click', function() {
 /* Masonry */
 
 document.body.addEventListener('keydown', function (e) {//enable enter while tabbing over spans
-  if ((e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') && document.activeElement !== null && (document.activeElement.classList.contains('item') || document.activeElement.classList.contains('playlistHolder') || document.activeElement.id === 'setOperation')) {
+  if ((e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') && document.activeElement !== null && (document.activeElement.classList.contains('item') || document.activeElement.classList.contains('playlistHolder') || document.activeElement.id === 'setOperation' || document.activeElement.classList.contains('operation'))) {
     document.activeElement.click();
   }
 });
