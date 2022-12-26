@@ -5,7 +5,10 @@ html, body {
   padding: 0;
 }
 
-/*prefers-reduced-motion*/
+
+
+/* prefers-reduced-motion */
+
 @media screen and (prefers-reduced-motion: reduce), (update: slow) {
   * {
     animation-duration: 0.001ms !important;
@@ -14,7 +17,10 @@ html, body {
   }
 }
 
-/*Dark Mode*/
+
+
+/* Dark Mode */
+
 :root, ::before, ::after { /*Gradient color average: #128A74 10 midpoints first choice*/
   --light0: #E9F4F2; /*#fff*/
   --light1: #CCD7D5; /*#dfdfdf*/
@@ -63,7 +69,10 @@ textarea::-webkit-scrollbar-track {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-/*Light Mode*/
+
+
+/* Light Mode */
+
 @media (prefers-color-scheme: light) {
   :root, ::before, ::after {
     --light0: #020D0B; /*#000*/
@@ -103,7 +112,10 @@ textarea::-webkit-scrollbar-track {
   }
 }
 
-/*Scrollbar*/
+
+
+/* Scrollbar */
+
 body {
   scrollbar-width: thin;
 }
@@ -121,14 +133,20 @@ body {
   border-radius: 0.25rem;
 }
 
-/*Body*/
+
+
+/* Body */
+
 body {
   font-family: Tahoma, sans-serif;
   background-color: var(--dark0);
   color: var(--light0);
 }
 
-/*Header*/
+
+
+/* Header */
+
 header {
   display: flex;
   flex-direction: column;
@@ -152,7 +170,10 @@ header {
   text-align: center;
 }
 
-/*Normal hover*/
+
+
+/* Normal hover */
+
 button, .playlistHolder, #setOperation {
   background-color: var(--dark1);
   transition: background-color 200ms;
@@ -168,7 +189,10 @@ button:hover, .playlistHolder:hover, #setOperation:hover {
   background-color: var(--dark3);
 }
 
-/*login*/
+
+
+/* login */
+
 #login {
   padding: 1rem;
   display: flex;
@@ -226,7 +250,10 @@ button {
   opacity: 1;
 }
 
-/*loggedin*/
+
+
+/* loggedin */
+
 #loggedin {
   padding: 1rem;
   display: none;
@@ -246,7 +273,10 @@ button {
   margin-right: auto;
 }
 
-/*setOperations*/
+
+
+/* setOperations */
+
 #setOperations {
   display: flex;
   justify-content: center;
@@ -282,7 +312,10 @@ button {
   margin-left: 0.5rem;
 }
 
-/*Playlists*/
+
+
+/* Playlists */
+
 #playlistPicker {
   display: none;
   flex-direction: column;
@@ -359,7 +392,10 @@ button {
   content: "Load More";
 }
 
-/*Operations*/
+
+
+/* Operations */
+
 #operationPicker {
   display: none;
   flex-wrap: wrap;
@@ -386,7 +422,10 @@ button {
   max-width: 8rem;
 }
 
-/*Toasts*/
+
+
+/* Toasts */
+
 #toasts {
   margin-left: auto;
   z-index: 1;
