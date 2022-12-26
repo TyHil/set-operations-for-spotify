@@ -61,7 +61,7 @@ textarea::-webkit-scrollbar-thumb:hover {
 textarea::-webkit-scrollbar-track {
   background-color: var(--light0);
 }
-#title, .featured {
+#title, .featured, .featured::after {
   color: var(--dark0);
 }
 #byLine {
@@ -103,7 +103,7 @@ textarea::-webkit-scrollbar-track {
   ::-webkit-scrollbar-thumb:hover {
     background-color: rgba(0, 0, 0, 0.28);
   }
-  #title, .featured {
+  #title, .featured, .featured::after {
     color: var(--light1);
   }
   #byLine {
@@ -241,16 +241,13 @@ button {
   left: 0;
   background-image: var(--secondary);
 }
-.featured::after {
-  color: var(--dark0);
-}
 #login-button::after {
   content: "Log in with Spotify";
 }
 #create::after {
   content: "Create Playlist";
 }
-.featured:hover::before, .featured:focus-visible::before, .featured:hover::after .featured:focus-visible::after {
+.featured:hover::before, .featured:focus-visible::before, .featured:hover::after, .featured:focus-visible::after {
   opacity: 1;
 }
 
