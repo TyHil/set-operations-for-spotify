@@ -1,6 +1,15 @@
 const path = 'set-operations-for-spotify/';////set-operations-for-spotify/
 
 
+
+/* Clear Query Paramaters */
+
+function clearQuery() {
+  window.history.replaceState('', document.title, window.location.toString().substring(0, window.location.toString().indexOf('?')));
+}
+
+
+
 /* Favicon */
 
 const faviconEl = document.querySelector('link[rel="icon"]');
@@ -88,19 +97,19 @@ function exchangeToken(code) {
     }),
   }).then(addThrowErrorToFetch).then((data) => {
     processTokenResponse(data);
-
     // clear search query params in the url
-    window.history.replaceState("", document.title, window.location.toString().substring(0, window.location.toString().indexOf("?")));
+    clearQuery();
   }).catch(handleError);
 }
 
 function handleError(error) {
-  console.error(error);
-  if (error.error && error.error.status && error.error.message) {
-    createToast(error.error.status + ': ' + error.error.message);
+  if (error.error && Object.values(error.error).length >= 2) {
+    createToast(Object.values(error.error)[0] + ': ' + Object.values(error.error)[1]);
   } else {
     createToast(error);
   }
+  clearQuery();
+  console.error(error);
 }
 
 async function addThrowErrorToFetch(response) {
@@ -183,9 +192,8 @@ function getUserPlaylists(link = 'https://api.spotify.com/v1/me/playlists') {
   getSpotifyData(link).then((data) => {
     for (const playlistData of data.items) {
       if (playlistData.tracks.total) {
-        const playlist = document.createElement('div');
+        const playlist = document.createElement('button');
         playlist.classList.add('item');
-        playlist.tabIndex = 0;
         const content = document.createElement('div');
         content.classList.add('content');
         content.dataset.id = playlistData.id;
@@ -307,7 +315,7 @@ function postSpotifySongs(id, tracks) {
 /*Spotify run*/
 
 const client_id = '72236ba6e9d740449f9128203ad489f6';
-const redirect_uri = 'https://tylergordonhill.com/set-operations-for-spotify'; // Your redirect uri
+const redirect_uri = 'https://tylergordonhill.com/set-operations-for-spotify'; /// https://tylergordonhill.com/set-operations-for-spotify
 
 let access_token = window.localStorage.getItem('access_token') || null;
 let refresh_token = window.localStorage.getItem('refresh_token') || null;
@@ -345,7 +353,7 @@ document.getElementById('logout-button').addEventListener('click', function() {
 /* Masonry */
 
 document.body.addEventListener('keydown', function (e) {//enable enter while tabbing over spans
-  if ((e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') && document.activeElement !== null && (document.activeElement.classList.contains('item') || document.activeElement.classList.contains('playlistHolder') || document.activeElement.id === 'setOperation' || document.activeElement.classList.contains('operation'))) {
+  if ((e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') && document.activeElement !== null && document.activeElement.classList.contains('item')) {
     document.activeElement.click();
   }
 });

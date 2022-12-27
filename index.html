@@ -37,24 +37,24 @@
   </header>
   <div id="login">
     <h3>Create new playlists using set operations between your playlists.</h3>
-    <button id="login-button" class="featured">Log in with Spotify</button>
+    <button id="login-button" class="button featured">Log in with Spotify</button>
   </div>
   <div id="loggedin">
     <div id="userHeader">
       <h3 id="name"></h3>
-      <button id="logout-button">Logout</button>
+      <button id="logout-button" class="button">Logout</button>
     </div>
     <div id="setOperations">
-      <div id="playlist1" class="playlistHolder" tabindex="0">
+      <button id="playlist1" class="playlistHolder">
         <p>Click to add playlist</p>
-      </div>
-      <div id="setOperation" tabindex="0">
+      </button>
+      <button id="setOperation">
         <p>Click to choose operation</p>
-      </div>
-      <div id="playlist2" class="playlistHolder" tabindex="0">
+      </button>
+      <button id="playlist2" class="playlistHolder"button>
         <p>Click to add playlist</p>
-      </div>
-      <button id="create" class="featured">Create Playlist</button>
+      </button>
+      <button id="create" class="button featured">Create Playlist</button>
     </div>
     <div id="playlistPicker">
       <a id="spotifyLogo" href="spotify:https://open.spotify.com/" target="_blank">
@@ -64,24 +64,24 @@
         </h3>
       </a>
       <div id="playlists"></div>
-      <button id="loadMore" class="featured">Load More</button>
+      <button id="loadMore" class="button featured">Load More</button>
     </div>
     <div id="operationPicker">
-      <div class="operation" data-id="difference" tabindex="0">
+      <button class="operation" data-id="difference">
         <img src="set-operations-for-spotify/images/difference.svg" alt="Difference image" class="svg">
         <p class="title">Difference</p>
         <p class="description">Elements that are in A but not in B</p>
-      </div>
-      <div class="operation" data-id="union" tabindex="0">
+      </button>
+      <button class="operation" data-id="union">
         <img src="set-operations-for-spotify/images/union.svg" alt="Union image" class="svg">
         <p class="title">Union</p>
         <p class="description">Elements that are in A or in B (possibly both)</p>
-      </div>
-      <div class="operation" data-id="intersection" tabindex="0">
+      </button>
+      <button class="operation" data-id="intersection">
         <img src="set-operations-for-spotify/images/intersection.svg" alt="Intersection image" class="svg">
         <p class="title">Intersection</p>
         <p class="description">All elements that are both in A and B</p>
-      </div>
+      </button>
     </div>
   </div>
   <div id="toasts"></div>
