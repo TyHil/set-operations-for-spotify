@@ -216,7 +216,7 @@ function getUserPlaylists(link = 'https://api.spotify.com/v1/me/playlists') {
         const a = document.createElement('a');
         a.classList.add('link');
         a.href = 'spotify:https://open.spotify.com/playlist/' + playlistData.id;
-        a.title = 'Open playlist in Spotify'
+        a.title = 'Open playlist in Spotify';
         const img = document.createElement('img');
         img.src = path + 'images/spotifyLogo.png';
         img.alt = 'Spotify logo';
@@ -489,7 +489,7 @@ document.getElementById('create').addEventListener('click', async function() {
       let tracks = [];
       let separator = '';
       if (setOperation.children[0].dataset.id === 'difference') {
-        tracks = tracks1.filter(x => !tracks2.includes(x))
+        tracks = tracks1.filter(x => !tracks2.includes(x));
         separator = '-';
       } else if (setOperation.children[0].dataset.id === 'union') {
         tracks = [...new Set([...tracks1, ...tracks2])];
