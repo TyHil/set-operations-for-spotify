@@ -178,7 +178,7 @@ header {
   line-height: 1.6rem;
   padding: 0.7rem 1rem 0.7rem 1rem;
   border-radius: 1.5rem;
-  transition: background-color 0.2s;
+  transition: background-color 200ms;
   text-align: center;
 }
 
@@ -236,7 +236,7 @@ h3 {
 }
 .featured::before, .featured::after {
   position: absolute;
-  transition: opacity 0.2s;
+  transition: opacity 200ms;
   opacity: 0;
   border-radius: 1.5rem;
 }
@@ -482,8 +482,8 @@ h3 {
   }
 }
 .toast.animatein {
-  -webkit-animation: slidein 0.5s cubic-bezier(0.175, 0.885, 0.320, 1.275);
-  animation: slidein 0.5s cubic-bezier(0.175, 0.885, 0.320, 1.275);
+  -webkit-animation: slidein 500ms cubic-bezier(0.175, 0.885, 0.320, 1.275);
+  animation: slidein 500ms cubic-bezier(0.175, 0.885, 0.320, 1.275);
 }
 @-webkit-keyframes slideout {
   from {
@@ -510,8 +510,8 @@ h3 {
   }
 }
 .toast.animateout {
-  -webkit-animation: slideout 0.5s forwards;
-  animation: slideout 0.5s forwards;
+  -webkit-animation: slideout 500ms forwards;
+  animation: slideout 500ms forwards;
 }
 .toast .close {
   color: var(--light1);

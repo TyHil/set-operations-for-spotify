@@ -13,7 +13,7 @@ function clearQuery() {
 /* Favicon */
 
 const faviconEl = document.querySelector('link[rel="icon"]');
-window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', function (event) {
+window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', function(event) {
   if (event.matches) {
     faviconEl.href = '/set-operations-for-spotify/tabicon-light.png';
   } else {
@@ -216,7 +216,7 @@ function getUserPlaylists(link = 'https://api.spotify.com/v1/me/playlists') {
         const a = document.createElement('a');
         a.classList.add('link');
         a.href = 'spotify:https://open.spotify.com/playlist/' + playlistData.id;
-        a.title = 'Open playlist in Spotify';
+        a.title = 'Open playlist in Spotify'
         const img = document.createElement('img');
         img.src = path + 'images/spotifyLogo.png';
         img.alt = 'Spotify logo';
@@ -263,13 +263,13 @@ function getPlaylistLength(id) {
 function getPlaylistSongs(id) {
   return getPlaylistLength(id).then((total) => {
     let promises = [];
-    for(let i = 0; i < total; i += 50) {
+    for (let i = 0; i < total; i += 50) {
       promises.push(getSpotifyData('https://api.spotify.com/v1/playlists/' + id + '/tracks?fields=items.track.uri&limit=50&offset=' + i).then((data) => {
         return data.items;
       }).catch(handleError));
     }
     return Promise.all(promises).then((data) => {
-      return data.reduce(function (arr, row) {
+      return data.reduce(function(arr, row) {
         return arr.concat(row.map(dat => dat.track.uri));
       }, []);
     }).catch(handleError);
@@ -293,15 +293,15 @@ function postSpotifyData(link, data) {
 }
 
 function postSpotifyPlaylist(name, description) {
-  return postSpotifyData(userHref + '/playlists', {name: name, description: description + ' Created by Set Operations For Spotify available at https://tylergordonhill.com/set-operations-for-spotify'}).then((data) => {
+  return postSpotifyData(userHref + '/playlists', { name: name, description: description + ' Created by Set Operations For Spotify available at https://tylergordonhill.com/set-operations-for-spotify' }).then((data) => {
     return data.id;
   }).catch(handleError);
 }
 
 function postSpotifySongs(id, tracks) {
   let promises = [];
-  for(let i = 0; i < tracks.length; i += 100) {
-    promises.push(postSpotifyData('https://api.spotify.com/v1/playlists/' + id + '/tracks', {uris: tracks.slice(i, i + 100)}).then((data) => {
+  for (let i = 0; i < tracks.length; i += 100) {
+    promises.push(postSpotifyData('https://api.spotify.com/v1/playlists/' + id + '/tracks', { uris: tracks.slice(i, i + 100) }).then((data) => {
       return data;
     }).catch(handleError));
   }
@@ -386,7 +386,7 @@ function createToast(text, permanent = 0, buttonText, onButtonClick, onClose) {
     if (onClose) {
       onClose();
     }
-    div.addEventListener('animationend', function () {
+    div.addEventListener('animationend', function() {
       div.remove();
     });
   }
@@ -402,10 +402,10 @@ function createToast(text, permanent = 0, buttonText, onButtonClick, onClose) {
   if (onButtonClick) {
     let undo = document.createElement('button');
     undo.innerText = buttonText;
-    undo.addEventListener('click', function () {
+    undo.addEventListener('click', function() {
       onButtonClick();//undo
       div.classList.add('animateout');
-      div.addEventListener('animationend', function () {
+      div.addEventListener('animationend', function() {
         div.remove();
       });
     });
@@ -413,10 +413,10 @@ function createToast(text, permanent = 0, buttonText, onButtonClick, onClose) {
   }
   if (!permanent) {
     let timer = setTimeout(close, 6000);
-    div.addEventListener('mouseover', function () {
+    div.addEventListener('mouseover', function() {
       clearTimeout(timer);
     });
-    div.addEventListener('mouseout', function () {
+    div.addEventListener('mouseout', function() {
       timer = setTimeout(close, 6000);
     });
   }
@@ -430,7 +430,7 @@ function createToast(text, permanent = 0, buttonText, onButtonClick, onClose) {
 /*Set Operation*/
 
 const playlistHolders = document.getElementsByClassName('playlistHolder');
-for(let i = 0; i < playlistHolders.length; i++) {
+for (let i = 0; i < playlistHolders.length; i++) {
   playlistHolders[i].addEventListener('click', function() {
     document.getElementById('setOperation').classList.remove('clicked');
     document.getElementById('operationPicker').style.display = 'none';
@@ -439,7 +439,7 @@ for(let i = 0; i < playlistHolders.length; i++) {
       playlistHolders[i].classList.remove('clicked');
       playlistPicker.style.display = 'none';
     } else {
-      playlistHolders[-i+1].classList.remove('clicked');
+      playlistHolders[-i + 1].classList.remove('clicked');
       playlistHolders[i].classList.add('clicked');
       playlistPicker.style.display = 'flex';
       resizeAllMasonryItems();
@@ -449,7 +449,7 @@ for(let i = 0; i < playlistHolders.length; i++) {
 
 document.getElementById('setOperation').addEventListener('click', function() {
   const playlistHolders = document.getElementsByClassName('playlistHolder');
-  for(let i = 0; i < playlistHolders.length; i++) {
+  for (let i = 0; i < playlistHolders.length; i++) {
     playlistHolders[i].classList.remove('clicked');
   }
   document.getElementById('playlistPicker').style.display = 'none';
@@ -464,7 +464,7 @@ document.getElementById('setOperation').addEventListener('click', function() {
 });
 
 const operations = document.getElementsByClassName('operation');
-for(let i = 0; i < operations.length; i++) {
+for (let i = 0; i < operations.length; i++) {
   operations[i].addEventListener('click', function() {
     const setOperation = document.getElementById('setOperation');
     while (setOperation.children[0]) {
@@ -489,7 +489,7 @@ document.getElementById('create').addEventListener('click', async function() {
       let tracks = [];
       let separator = '';
       if (setOperation.children[0].dataset.id === 'difference') {
-        tracks = tracks1.filter(x => !tracks2.includes(x));
+        tracks = tracks1.filter(x => !tracks2.includes(x))
         separator = '-';
       } else if (setOperation.children[0].dataset.id === 'union') {
         tracks = [...new Set([...tracks1, ...tracks2])];
