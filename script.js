@@ -167,7 +167,7 @@ function processTokenExpiration(date) {
   return Promise.resolve();
 }
 
-function getSpotifyData(link, callback) {
+function getSpotifyData(link) {
   return fetch(link, {
     headers: {
       Authorization: 'Bearer ' + access_token,
