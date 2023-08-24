@@ -2,24 +2,85 @@ const path = 'set-operations-for-spotify/';////set-operations-for-spotify/
 
 
 
+/* Tab Icon */
+
+if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+  document.querySelector('link[rel="icon"]').href = 'set-operations-for-spotify/tabicon-light.png';
+}
+
+
+
+/* Toasts */
+
+function createToast(text, options) {
+  const defaults = {
+    permanent: false,
+    delay: 6000,
+    button: false,
+    buttonText: '',
+    onButtonClick: () => {},
+    onClose: () => {}
+  };
+  options = {...defaults, ...options};
+
+  let div = document.createElement('div');
+  div.classList.add('toast');
+
+  function close() {
+    if (document.body.contains(div)) {
+      div.classList.add('animateout');
+      options.onClose();
+      div.addEventListener('animationend', function() {
+        div.remove();
+      });
+    }
+  }
+
+  let x = document.createElement('button');
+  x.classList.add('close');
+  x.innerHTML = '&times;';
+  x.addEventListener('click', close);
+  div.appendChild(x);
+
+  let p = document.createElement('p');
+  p.innerText = text;
+  div.appendChild(p);
+
+  if (options.button) {
+    let undo = document.createElement('button');
+    undo.innerText = options.buttonText;
+    undo.addEventListener('click', function() {
+      options.onButtonClick();
+      div.classList.add('animateout');
+      div.addEventListener('animationend', function() {
+        div.remove();
+      });
+    });
+    div.appendChild(undo);
+  }
+
+  if (!options.permanent) {
+    let timer = setTimeout(close, options.delay);
+    div.addEventListener('mouseover', function() {
+      clearTimeout(timer);
+    });
+    div.addEventListener('mouseout', function() {
+      timer = setTimeout(close, options.delay);
+    });
+  }
+
+  document.getElementById('toasts').appendChild(div);
+  div.classList.add('animatein');
+  return close;
+}
+
+
+
 /* Clear Query Paramaters */
 
 function clearQuery() {
   window.history.replaceState('', document.title, window.location.toString().substring(0, window.location.toString().indexOf('?')));
 }
-
-
-
-/* Favicon */
-
-const faviconEl = document.querySelector('link[rel="icon"]');
-window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', function(event) {
-  if (event.matches) {
-    faviconEl.href = '/set-operations-for-spotify/tabicon-light.png';
-  } else {
-    faviconEl.href = '/set-operations-for-spotify/tabicon.png';
-  }
-});
 
 
 
@@ -376,57 +437,6 @@ window.addEventListener('resize', function() {
 
 
 
-/* Toasts */
-
-function createToast(text, permanent = 0, buttonText, onButtonClick, onClose) {
-  let div = document.createElement('div');
-  div.classList.add('toast');
-  function close() {
-    div.classList.add('animateout');
-    if (onClose) {
-      onClose();
-    }
-    div.addEventListener('animationend', function() {
-      div.remove();
-    });
-  }
-  let x = document.createElement('span');
-  x.tabIndex = 0;
-  x.classList.add('close');
-  x.innerHTML = '&times;';
-  x.addEventListener('click', close);
-  div.appendChild(x);
-  let p = document.createElement('p');
-  p.innerText = text;
-  div.appendChild(p);
-  if (onButtonClick) {
-    let undo = document.createElement('button');
-    undo.innerText = buttonText;
-    undo.addEventListener('click', function() {
-      onButtonClick();//undo
-      div.classList.add('animateout');
-      div.addEventListener('animationend', function() {
-        div.remove();
-      });
-    });
-    div.appendChild(undo);
-  }
-  if (!permanent) {
-    let timer = setTimeout(close, 6000);
-    div.addEventListener('mouseover', function() {
-      clearTimeout(timer);
-    });
-    div.addEventListener('mouseout', function() {
-      timer = setTimeout(close, 6000);
-    });
-  }
-  document.getElementById('toasts').appendChild(div);
-  div.classList.add('animatein');
-  return close;
-}
-
-
-
 /*Set Operation*/
 
 const playlistHolders = document.getElementsByClassName('playlistHolder');
@@ -483,7 +493,7 @@ document.getElementById('create').addEventListener('click', async function() {
   const setOperation = document.getElementById('setOperation');
   const playlist2 = document.getElementById('playlist2');
   if (playlist1.children[0].dataset.id && setOperation.children[0].dataset.id && playlist2.children[0].dataset.id) {
-    const closeGettingTracks = createToast('Getting tracks', 1);
+    const closeGettingTracks = createToast('Getting tracks', { permanent: true });
     Promise.all([getPlaylistSongs(playlist1.children[0].dataset.id), getPlaylistSongs(playlist2.children[0].dataset.id)]).then(([tracks1, tracks2]) => {
       closeGettingTracks();
       let tracks = [];
@@ -501,7 +511,7 @@ document.getElementById('create').addEventListener('click', async function() {
       if (!tracks.length) {
         createToast('Empty playlist!');
       } else {
-        const closeCreatingPlaylist = createToast('Creating playlist', 1);
+        const closeCreatingPlaylist = createToast('Creating playlist', { permanent: true });
         let name1 = playlist1.getElementsByClassName('title')[0].innerText;
         let name2 = playlist2.getElementsByClassName('title')[0].innerText;
         if (name1.includes('-') || name1.includes('∪') || name1.includes('∩')) {
@@ -512,11 +522,15 @@ document.getElementById('create').addEventListener('click', async function() {
         }
         postSpotifyPlaylist(name1 + ' ' + separator + ' ' + name2, 'This is a ' + setOperation.children[0].dataset.id + ' between ' + name1 + ' and ' + name2 + '.').then((playlist) => {
           closeCreatingPlaylist();
-          const closeAddingTracks = createToast('Adding tracks', 1);
+          const closeAddingTracks = createToast('Adding tracks', { permanent: true });
           postSpotifySongs(playlist, tracks).then(() => {
             closeAddingTracks();
-            createToast('Done', 0, 'Open', function() {
-              window.open('spotify:https://open.spotify.com/playlist/' + playlist, '_self');
+            createToast('Done', {
+              button: true,
+              buttonText: 'Open',
+              onButtonClick: function() {
+                window.open('spotify:https://open.spotify.com/playlist/' + playlist, '_self');
+              },
             });
           }).catch(handleError);
         }).catch(handleError);

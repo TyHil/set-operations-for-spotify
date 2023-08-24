@@ -36,14 +36,16 @@
     <h2 id="title">Set Operations for Spotify</h2>
     <a id="byLine" href="/">Tyler Gordon Hill</a>
   </header>
+
   <div id="login">
     <h3>Create new playlists using set operations between your playlists.</h3>
-    <button id="login-button" class="button featured">Log in with Spotify</button>
+    <button id="login-button" class="large featured">Log in with Spotify</button>
   </div>
+
   <div id="loggedin">
     <div id="userHeader">
       <h3 id="name"></h3>
-      <button id="logout-button" class="button">Logout</button>
+      <button id="logout-button" class="large">Logout</button>
     </div>
     <div id="setOperations">
       <button id="playlist1" class="playlistHolder">
@@ -55,7 +57,7 @@
       <button id="playlist2" class="playlistHolder"button>
         <p>Click to add playlist</p>
       </button>
-      <button id="create" class="button featured">Create Playlist</button>
+      <button id="create" class="large featured">Create Playlist</button>
     </div>
     <div id="playlistPicker">
       <a id="spotifyLogo" href="spotify:https://open.spotify.com/" target="_blank">
@@ -65,7 +67,7 @@
         </h3>
       </a>
       <div id="playlists"></div>
-      <button id="loadMore" class="button featured">Load More</button>
+      <button id="loadMore" class="large featured">Load More</button>
     </div>
     <div id="operationPicker">
       <button class="operation" data-id="difference">
@@ -85,6 +87,7 @@
       </button>
     </div>
   </div>
+
   <div id="toasts"></div>
 
   <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js"></script>
