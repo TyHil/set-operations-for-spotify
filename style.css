@@ -58,8 +58,12 @@ header {
   -webkit-filter: var(--lightSVG);
           filter: var(--lightSVG);
 }
+.svg.dark {
+  -webkit-filter: var(--darkSVG);
+          filter: var(--darkSVG);
+}
 @media (prefers-color-scheme: light) {
-  .svg {
+  .svg:not(.light) {
     -webkit-filter: var(--darkSVG);
             filter: var(--darkSVG);
   }
