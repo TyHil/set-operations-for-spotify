@@ -1,4 +1,5 @@
 const path = 'set-operations-for-spotify/';////set-operations-for-spotify/
+const redirect_uri = 'https://tylergordonhill.com/set-operations-for-spotify'; /// https://tylergordonhill.com/set-operations-for-spotify
 
 
 
@@ -354,20 +355,22 @@ function postSpotifyData(link, data) {
 }
 
 function postSpotifyPlaylist(name, description) {
-  return postSpotifyData(userHref + '/playlists', { name: name, description: description + ' Created by Set Operations For Spotify available at https://tylergordonhill.com/set-operations-for-spotify' }).then((data) => {
+  return postSpotifyData(userHref + '/playlists', { name: name, description: description + ' Created with Set Operations For Spotify available at https://tylergordonhill.com/set-operations-for-spotify' }).then((data) => {
     return data.id;
   }).catch(handleError);
 }
 
 function postSpotifySongs(id, tracks) {
-  let promises = [];
-  for (let i = 0; i < tracks.length; i += 100) {
-    promises.push(postSpotifyData('https://api.spotify.com/v1/playlists/' + id + '/tracks', { uris: tracks.slice(i, i + 100) }).then((data) => {
-      return data;
-    }).catch(handleError));
-  }
-  return Promise.all(promises).then((data) => {
-    return data;
+  return new Promise((resolve) => {
+    postSpotifyData('https://api.spotify.com/v1/playlists/' + id + '/tracks', { uris: tracks.slice(0, 100) }).then((data) => {
+        const tracksLeft = tracks.slice(100);
+        if (tracksLeft.length) {
+          resolve(postSpotifySongs(id, tracksLeft));
+        } else {
+          resolve();
+        }
+        return data;
+      });
   }).catch(handleError);
 }
 
@@ -376,7 +379,6 @@ function postSpotifySongs(id, tracks) {
 /*Spotify run*/
 
 const client_id = '72236ba6e9d740449f9128203ad489f6';
-const redirect_uri = 'https://tylergordonhill.com/set-operations-for-spotify'; /// https://tylergordonhill.com/set-operations-for-spotify
 
 let access_token = window.localStorage.getItem('access_token') || null;
 let refresh_token = window.localStorage.getItem('refresh_token') || null;
