@@ -1,3 +1,6 @@
+/* STYLE GUIDE */
+
+
 /* Header */
 
 #title {
@@ -397,6 +400,50 @@ button.featured:hover::before, a.button.featured:hover::before, button.featured:
   animation: slideout 500ms forwards;
 }
 
+
+
+/* Footer */
+
+footer {
+  padding: 2rem 1rem;
+  background-color: var(--dark1);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  gap: 2rem;
+}
+footer div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+footer div p {
+  margin-bottom: 0.25rem;
+}
+footer div a, footer div a:visited {
+  color: var(--light1);
+  text-decoration-color: transparent;
+  transition: text-decoration-color 200ms;
+}
+footer div a:hover {
+  text-decoration-color: var(--light1);
+}
+
+/*Extra*/
+/*Keep at bottom*/
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+#login, #loggedin {
+  margin-bottom: auto;
+}
+
+
+
+/* STYLES */
 
 
 /* Normal hover */
