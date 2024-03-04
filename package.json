@@ -1,6 +1,5 @@
 {
-  "name": "tyhil-personal-website-styles",
-  "version": "1.0.0",
+  "name": "set-operations-for-spotify",
   "scripts": {
     "format": "prettier . --write",
     "format:check": "prettier . --check"
