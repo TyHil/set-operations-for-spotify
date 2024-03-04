@@ -1,119 +1,139 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" prefix="og: http://ogp.me/ns#">
+  <head>
+    <!-- HTML Meta Tags -->
+    <title>Set Operations for Spotify</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Create new Spotify playlists using set operations on your existing playlists."
+    />
+    <meta name="canonical" href="https://tylergordonhill.com/set-operations-for-spotify" />
+    <meta name="theme-color" content="#128A74" />
 
-<head>
-  <!-- HTML Meta Tags -->
-  <title>Set Operations for Spotify</title>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Create new Spotify playlists using set operations on your existing playlists." />
-  <meta name="canonical" href="https://tylergordonhill.com/set-operations-for-spotify" />
-  <meta name="theme-color" content="#128A74" />
-  
-  <!-- Open Graph Meta Tags -->
-  <meta property="og:title" content="Set Operations for Spotify" />
-  <meta property="og:description" content="Create new Spotify playlists using set operations on your existing playlists."/>
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://tylergordonhill.com/set-operations-for-spotify" />
-  <meta property="og:image" content="https://tylergordonhill.com/set-operations-for-spotify/linkpreview.png" />
-  <meta property="og:image:type" content="image/png">
-  <meta property="og:image:alt" content="Screenshot of the website displaying the difference of two playlists. ">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Set Operations for Spotify" />
+    <meta
+      property="og:description"
+      content="Create new Spotify playlists using set operations on your existing playlists."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://tylergordonhill.com/set-operations-for-spotify" />
+    <meta
+      property="og:image"
+      content="https://tylergordonhill.com/set-operations-for-spotify/linkpreview.png"
+    />
+    <meta property="og:image:type" content="image/png" />
+    <meta
+      property="og:image:alt"
+      content="Screenshot of the website displaying the difference of two playlists. "
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
 
-  <!-- Twitter Meta Tags -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:domain" content="tylergordonhill.com" />
-  
-  <!-- Link Tags -->
-  <link rel="icon" href="set-operations-for-spotify/tabicon.png" />
-  <link href="https://tylergordonhill.com/global.css" rel="stylesheet" type="text/css" />
-  <link href="set-operations-for-spotify/style.css" rel="stylesheet" type="text/css" />
-</head>
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:domain" content="tylergordonhill.com" />
 
-<body>
-  <header>
-    <h2 id="title">Set Operations for Spotify</h2>
-    <a id="byLine" href="/">Tyler Gordon Hill</a>
-  </header>
+    <!-- Link Tags -->
+    <link rel="icon" href="set-operations-for-spotify/tabicon.png" />
+    <link href="https://tylergordonhill.com/global.css" rel="stylesheet" type="text/css" />
+    <link href="set-operations-for-spotify/style.css" rel="stylesheet" type="text/css" />
+  </head>
 
-  <div id="login">
-    <h3>Create new playlists using set operations between your playlists.</h3>
-    <button id="login-button" class="large featured">Log in with Spotify</button>
-  </div>
+  <body>
+    <header>
+      <h2 id="title">Set Operations for Spotify</h2>
+      <a id="byLine" href="/">Tyler Gordon Hill</a>
+    </header>
 
-  <div id="loggedin">
-    <div id="userHeader">
-      <h3 id="name"></h3>
-      <button id="logout-button" class="large">Logout</button>
+    <div id="login">
+      <h3>Create new playlists using set operations between your playlists.</h3>
+      <button id="login-button" class="large featured">Log in with Spotify</button>
     </div>
-    <div id="setOperations">
-      <button id="playlist1" class="playlistHolder">
-        <p>Click to add playlist</p>
-      </button>
-      <button id="setOperation">
-        <p>Click to choose operation</p>
-      </button>
-      <button id="playlist2" class="playlistHolder"button>
-        <p>Click to add playlist</p>
-      </button>
-      <button id="create" class="large featured">Create Playlist</button>
-    </div>
-    <div id="playlistPicker">
-      <a id="spotifyLogo" href="spotify:https://open.spotify.com/" target="_blank">
-        <h3>
-          <img src="set-operations-for-spotify/images/spotifyLogo.png" alt="Spotify Logo">
-          Playlists
-        </h3>
-      </a>
-      <div id="playlists"></div>
-      <button id="loadMore" class="large featured">Load More</button>
-    </div>
-    <div id="operationPicker">
-      <button class="operation" data-id="difference">
-        <img src="set-operations-for-spotify/images/difference.svg" alt="Difference image" class="svg">
-        <p class="title">Difference</p>
-        <p class="description">Elements that are in A but not in B</p>
-      </button>
-      <button class="operation" data-id="union">
-        <img src="set-operations-for-spotify/images/union.svg" alt="Union image" class="svg">
-        <p class="title">Union</p>
-        <p class="description">Elements that are in A or in B (possibly both)</p>
-      </button>
-      <button class="operation" data-id="intersection">
-        <img src="set-operations-for-spotify/images/intersection.svg" alt="Intersection image" class="svg">
-        <p class="title">Intersection</p>
-        <p class="description">All elements that are both in A and B</p>
-      </button>
-    </div>
-  </div>
 
-  <footer>
-    <div>
-      <p><strong>Contact and Social</strong></p>
-      <a href="mailto:tylergordonhill@gmail.com" target="_blank" rel="noopener">Email</a>
-      <a href="http://www.linkedin.com/in/tylergordonhill" target="_blank" rel="noopener">LinkedIn</a>
-      <a href="https://github.com/TyHil" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://replit.com/@TylerGHill" target="_blank" rel="noopener">Replit</a>
-      <a href="https://thangs.com/TylerHill" target="_blank" rel="noopener">Thangs</a>
+    <div id="loggedin">
+      <div id="userHeader">
+        <h3 id="name"></h3>
+        <button id="logout-button" class="large">Logout</button>
+      </div>
+      <div id="setOperations">
+        <button id="playlist1" class="playlistHolder">
+          <p>Click to add playlist</p>
+        </button>
+        <button id="setOperation">
+          <p>Click to choose operation</p>
+        </button>
+        <button id="playlist2" class="playlistHolder" button>
+          <p>Click to add playlist</p>
+        </button>
+        <button id="create" class="large featured">Create Playlist</button>
+      </div>
+      <div id="playlistPicker">
+        <a id="spotifyLogo" href="spotify:https://open.spotify.com/" target="_blank">
+          <h3>
+            <img src="set-operations-for-spotify/images/spotifyLogo.png" alt="Spotify Logo" />
+            Playlists
+          </h3>
+        </a>
+        <div id="playlists"></div>
+        <button id="loadMore" class="large featured">Load More</button>
+      </div>
+      <div id="operationPicker">
+        <button class="operation" data-id="difference">
+          <img
+            src="set-operations-for-spotify/images/difference.svg"
+            alt="Difference image"
+            class="svg"
+          />
+          <p class="title">Difference</p>
+          <p class="description">Elements that are in A but not in B</p>
+        </button>
+        <button class="operation" data-id="union">
+          <img src="set-operations-for-spotify/images/union.svg" alt="Union image" class="svg" />
+          <p class="title">Union</p>
+          <p class="description">Elements that are in A or in B (possibly both)</p>
+        </button>
+        <button class="operation" data-id="intersection">
+          <img
+            src="set-operations-for-spotify/images/intersection.svg"
+            alt="Intersection image"
+            class="svg"
+          />
+          <p class="title">Intersection</p>
+          <p class="description">All elements that are both in A and B</p>
+        </button>
+      </div>
     </div>
-    <div>
-      <p><strong>Subsites</strong></p>
-      <a href="/set-operations-for-spotify">Set Operations for Spotify</a>
-      <a href="/typewriter-formatting">Typewriter Formatting</a>
-      <a href="/cah-maker">Cards Against Humanity Card Maker</a>
-      <a href="/response-display">Response Display</a>
-      <a href="/password-generator">Password Generator</a>
-      <a href="/recipes">Recipes</a>
-    </div>
-  </footer>
 
-  <div id="toasts"></div>
+    <footer>
+      <div>
+        <p><strong>Contact and Social</strong></p>
+        <a href="mailto:tylergordonhill@gmail.com" target="_blank" rel="noopener">Email</a>
+        <a href="http://www.linkedin.com/in/tylergordonhill" target="_blank" rel="noopener"
+          >LinkedIn</a
+        >
+        <a href="https://github.com/TyHil" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://replit.com/@TylerGHill" target="_blank" rel="noopener">Replit</a>
+        <a href="https://thangs.com/TylerHill" target="_blank" rel="noopener">Thangs</a>
+      </div>
+      <div>
+        <p><strong>Subsites</strong></p>
+        <a href="/set-operations-for-spotify">Set Operations for Spotify</a>
+        <a href="/typewriter-formatting">Typewriter Formatting</a>
+        <a href="/cah-maker">Cards Against Humanity Card Maker</a>
+        <a href="/response-display">Response Display</a>
+        <a href="/password-generator">Password Generator</a>
+        <a href="/recipes">Recipes</a>
+      </div>
+    </footer>
 
-  <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-analytics-compat.js"></script>
-  <script src="https://tylergordonhill.com/global.js"></script>
-  <script src="set-operations-for-spotify/script.js"></script>
-</body>
+    <div id="toasts"></div>
 
+    <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-analytics-compat.js"></script>
+    <script src="https://tylergordonhill.com/global.js"></script>
+    <script src="set-operations-for-spotify/script.js"></script>
+  </body>
 </html>

@@ -1,15 +1,11 @@
-const path = 'set-operations-for-spotify/';////set-operations-for-spotify/
+const path = 'set-operations-for-spotify/'; ////set-operations-for-spotify/
 const redirect_uri = 'https://tylergordonhill.com/set-operations-for-spotify'; /// https://tylergordonhill.com/set-operations-for-spotify
-
-
 
 /* Tab Icon */
 
 if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
   document.querySelector('link[rel="icon"]').href = 'set-operations-for-spotify/tabicon-light.png';
 }
-
-
 
 /* Toasts */
 
@@ -22,7 +18,7 @@ function createToast(text, options) {
     onButtonClick: () => {},
     onClose: () => {}
   };
-  options = {...defaults, ...options};
+  options = { ...defaults, ...options };
 
   let div = document.createElement('div');
   div.classList.add('toast');
@@ -31,7 +27,7 @@ function createToast(text, options) {
     if (document.body.contains(div)) {
       div.classList.add('animateout');
       options.onClose();
-      div.addEventListener('animationend', function() {
+      div.addEventListener('animationend', function () {
         div.remove();
       });
     }
@@ -50,10 +46,10 @@ function createToast(text, options) {
   if (options.button) {
     let undo = document.createElement('button');
     undo.innerText = options.buttonText;
-    undo.addEventListener('click', function() {
+    undo.addEventListener('click', function () {
       options.onButtonClick();
       div.classList.add('animateout');
-      div.addEventListener('animationend', function() {
+      div.addEventListener('animationend', function () {
         div.remove();
       });
     });
@@ -62,10 +58,10 @@ function createToast(text, options) {
 
   if (!options.permanent) {
     let timer = setTimeout(close, options.delay);
-    div.addEventListener('mouseover', function() {
+    div.addEventListener('mouseover', function () {
       clearTimeout(timer);
     });
-    div.addEventListener('mouseout', function() {
+    div.addEventListener('mouseout', function () {
       timer = setTimeout(close, options.delay);
     });
   }
@@ -75,15 +71,15 @@ function createToast(text, options) {
   return close;
 }
 
-
-
 /* Clear Query Paramaters */
 
 function clearQuery() {
-  window.history.replaceState('', document.title, window.location.toString().substring(0, window.location.toString().indexOf('?')));
+  window.history.replaceState(
+    '',
+    document.title,
+    window.location.toString().substring(0, window.location.toString().indexOf('?'))
+  );
 }
-
-
 
 /*Spotify log in*/
 
@@ -97,11 +93,11 @@ function generateRandomString(length) {
 }
 
 async function generateCodeChallenge(codeVerifier) {
-  const digest = await crypto.subtle.digest(
-    'SHA-256',
-    new TextEncoder().encode(codeVerifier),
-  );
-  return btoa(String.fromCharCode(...new Uint8Array(digest))).replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
+  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(codeVerifier));
+  return btoa(String.fromCharCode(...new Uint8Array(digest)))
+    .replace(/=/g, '')
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_');
 }
 
 function generateUrlWithSearchParams(url, params) {
@@ -113,32 +109,30 @@ function generateUrlWithSearchParams(url, params) {
 function redirectToSpotifyAuthorizeEndpoint() {
   const codeVerifier = generateRandomString(64);
 
-  generateCodeChallenge(codeVerifier).then((code_challenge) => {
+  generateCodeChallenge(codeVerifier).then(code_challenge => {
     window.localStorage.setItem('code_verifier', codeVerifier);
 
     // Redirect to example:
     // GET https://accounts.spotify.com/authorize?response_type=code&client_id=77e602fc63fa4b96acff255ed33428d3&redirect_uri=http%3A%2F%2Flocalhost&scope=user-follow-modify&state=e21392da45dbf4&code_challenge=KADwyz1X~HIdcAG20lnXitK6k51xBP4pEMEZHmCneHD1JhrcHjE1P3yU_NjhBz4TdhV6acGo16PCd10xLwMJJ4uCutQZHw&code_challenge_method=S256
 
-    window.location = generateUrlWithSearchParams(
-      'https://accounts.spotify.com/authorize',
-      {
-        response_type: 'code',
-        client_id,
-        scope: 'user-read-private playlist-read-private playlist-read-collaborative playlist-modify-public',
-        code_challenge_method: 'S256',
-        code_challenge,
-        redirect_uri,
-      },
-    );
+    window.location = generateUrlWithSearchParams('https://accounts.spotify.com/authorize', {
+      response_type: 'code',
+      client_id,
+      scope:
+        'user-read-private playlist-read-private playlist-read-collaborative playlist-modify-public',
+      code_challenge_method: 'S256',
+      code_challenge,
+      redirect_uri
+    });
 
     // If the user accepts spotify will come back to your application with the code in the response query string
     // Example: http://127.0.0.1:8080/?code=NApCCg..BkWtQ&state=profile%2Factivity
   });
 }
 
-document.getElementById('login-button').addEventListener('click', redirectToSpotifyAuthorizeEndpoint, false);
-
-
+document
+  .getElementById('login-button')
+  .addEventListener('click', redirectToSpotifyAuthorizeEndpoint, false);
 
 /*Spotfiy return from log in*/
 
@@ -148,20 +142,23 @@ function exchangeToken(code) {
   fetch('https://accounts.spotify.com/api/token', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
     },
     body: new URLSearchParams({
       client_id,
       grant_type: 'authorization_code',
       code,
       redirect_uri,
-      code_verifier,
-    }),
-  }).then(addThrowErrorToFetch).then((data) => {
-    processTokenResponse(data);
-    // clear search query params in the url
-    clearQuery();
-  }).catch(handleError);
+      code_verifier
+    })
+  })
+    .then(addThrowErrorToFetch)
+    .then(data => {
+      processTokenResponse(data);
+      // clear search query params in the url
+      clearQuery();
+    })
+    .catch(handleError);
 }
 
 function handleError(error) {
@@ -204,8 +201,6 @@ function processTokenResponse(data) {
   getUserPlaylists();
 }
 
-
-
 /*Spotify load user data*/
 
 function processTokenExpiration(date) {
@@ -213,14 +208,17 @@ function processTokenExpiration(date) {
     return fetch('https://accounts.spotify.com/api/token', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
       },
       body: new URLSearchParams({
         client_id,
         grant_type: 'refresh_token',
-        refresh_token,
-      }),
-    }).then(addThrowErrorToFetch).then(processTokenResponse).catch(handleError);
+        refresh_token
+      })
+    })
+      .then(addThrowErrorToFetch)
+      .then(processTokenResponse)
+      .catch(handleError);
   }
   if (date - new Date().getTime() <= 0) {
     return refreshToken();
@@ -232,9 +230,9 @@ function processTokenExpiration(date) {
 function getSpotifyData(link) {
   return fetch(link, {
     headers: {
-      Authorization: 'Bearer ' + access_token,
-    },
-  }).then(async (response) => {
+      Authorization: 'Bearer ' + access_token
+    }
+  }).then(async response => {
     if (response.ok) {
       return response.json();
     } else {
@@ -244,108 +242,131 @@ function getSpotifyData(link) {
 }
 
 function getUserData() {
-  getSpotifyData('https://api.spotify.com/v1/me').then((data) => {
-    document.getElementById('name').innerText = 'Hi, ' + data.display_name;
-    userHref = data.href;
-  }).catch(handleError);
+  getSpotifyData('https://api.spotify.com/v1/me')
+    .then(data => {
+      document.getElementById('name').innerText = 'Hi, ' + data.display_name;
+      userHref = data.href;
+    })
+    .catch(handleError);
 }
 
 function getUserPlaylists(link = 'https://api.spotify.com/v1/me/playlists') {
-  getSpotifyData(link).then((data) => {
-    for (const playlistData of data.items) {
-      if (playlistData.tracks.total) {
-        const playlist = document.createElement('button');
-        playlist.classList.add('item');
-        const content = document.createElement('div');
-        content.classList.add('content');
-        content.dataset.id = playlistData.id;
-        const art = document.createElement('img');
-        art.classList.add('art');
-        content.append(art);
-        const text = document.createElement('div');
-        text.classList.add('text');
-        const title = document.createElement('p');
-        title.classList.add('title');
-        title.innerText = playlistData.name;
-        text.append(title);
-        if (playlistData.description) {
-          const description = document.createElement('p');
-          description.classList.add('description');
-          description.innerText = playlistData.description;
-          text.append(description);
-        }
-        content.append(text);
-        const a = document.createElement('a');
-        a.classList.add('link');
-        a.href = 'spotify:https://open.spotify.com/playlist/' + playlistData.id;
-        a.title = 'Open playlist in Spotify'
-        const img = document.createElement('img');
-        img.src = path + 'images/spotifyLogo.png';
-        img.alt = 'Spotify logo';
-        a.append(img);
-        content.append(a);
-        playlist.append(content);
-        document.getElementById('playlists').append(playlist);
-        art.addEventListener('load', function() {
-          resizeMasonryItem(playlist);
-        });
-        art.src = (playlistData.images[1] || playlistData.images[0]).url;
-        playlist.addEventListener('click', function() {
-          const playlistHolder = document.querySelector('.playlistHolder.clicked');
-          if (playlistHolder) {
-            if (playlistHolder.children[0]) {
-              playlistHolder.children[0].remove();
-            }
-            playlistHolder.append(content.cloneNode(true));
-            playlistHolder.classList.remove('clicked');
+  getSpotifyData(link)
+    .then(data => {
+      for (const playlistData of data.items) {
+        if (playlistData.tracks.total) {
+          const playlist = document.createElement('button');
+          playlist.classList.add('item');
+          const content = document.createElement('div');
+          content.classList.add('content');
+          content.dataset.id = playlistData.id;
+          const art = document.createElement('img');
+          art.classList.add('art');
+          content.append(art);
+          const text = document.createElement('div');
+          text.classList.add('text');
+          const title = document.createElement('p');
+          title.classList.add('title');
+          title.innerText = playlistData.name;
+          text.append(title);
+          if (playlistData.description) {
+            const description = document.createElement('p');
+            description.classList.add('description');
+            description.innerText = playlistData.description;
+            text.append(description);
           }
-          document.getElementById('playlistPicker').style.display = 'none';
-        });
+          content.append(text);
+          const a = document.createElement('a');
+          a.classList.add('link');
+          a.href = 'spotify:https://open.spotify.com/playlist/' + playlistData.id;
+          a.title = 'Open playlist in Spotify';
+          const img = document.createElement('img');
+          img.src = path + 'images/spotifyLogo.png';
+          img.alt = 'Spotify logo';
+          a.append(img);
+          content.append(a);
+          playlist.append(content);
+          document.getElementById('playlists').append(playlist);
+          art.addEventListener('load', function () {
+            resizeMasonryItem(playlist);
+          });
+          art.src = (playlistData.images[1] || playlistData.images[0]).url;
+          playlist.addEventListener('click', function () {
+            const playlistHolder = document.querySelector('.playlistHolder.clicked');
+            if (playlistHolder) {
+              if (playlistHolder.children[0]) {
+                playlistHolder.children[0].remove();
+              }
+              playlistHolder.append(content.cloneNode(true));
+              playlistHolder.classList.remove('clicked');
+            }
+            document.getElementById('playlistPicker').style.display = 'none';
+          });
+        }
       }
-    }
-    //handle next for load more
-    const loadMore = document.getElementById('loadMore');
-    if (data.next) {
-      loadMore.style.display = 'flex';
-      loadMore.addEventListener('click', function() {
-        getUserPlaylists(data.next);
-      }, { once: true });
-    } else {
-      loadMore.style.display = 'none';
-    }
-  }).catch(handleError);
+      //handle next for load more
+      const loadMore = document.getElementById('loadMore');
+      if (data.next) {
+        loadMore.style.display = 'flex';
+        loadMore.addEventListener(
+          'click',
+          function () {
+            getUserPlaylists(data.next);
+          },
+          { once: true }
+        );
+      } else {
+        loadMore.style.display = 'none';
+      }
+    })
+    .catch(handleError);
 }
 
 function getPlaylistLength(id) {
-  return getSpotifyData('https://api.spotify.com/v1/playlists/' + id + '/tracks?fields=total').then((data) => {
-    return data.total;
-  }).catch(handleError);
+  return getSpotifyData('https://api.spotify.com/v1/playlists/' + id + '/tracks?fields=total')
+    .then(data => {
+      return data.total;
+    })
+    .catch(handleError);
 }
 
 function getPlaylistSongs(id) {
-  return getPlaylistLength(id).then((total) => {
-    let promises = [];
-    for (let i = 0; i < total; i += 50) {
-      promises.push(getSpotifyData('https://api.spotify.com/v1/playlists/' + id + '/tracks?fields=items.track.uri&limit=50&offset=' + i).then((data) => {
-        return data.items;
-      }).catch(handleError));
-    }
-    return Promise.all(promises).then((data) => {
-      return data.reduce(function(arr, row) {
-        return arr.concat(row.map(dat => dat.track.uri));
-      }, []);
-    }).catch(handleError);
-  }).catch(handleError);
+  return getPlaylistLength(id)
+    .then(total => {
+      let promises = [];
+      for (let i = 0; i < total; i += 50) {
+        promises.push(
+          getSpotifyData(
+            'https://api.spotify.com/v1/playlists/' +
+              id +
+              '/tracks?fields=items.track.uri&limit=50&offset=' +
+              i
+          )
+            .then(data => {
+              return data.items;
+            })
+            .catch(handleError)
+        );
+      }
+      return Promise.all(promises)
+        .then(data => {
+          return data.reduce(function (arr, row) {
+            return arr.concat(row.map(dat => dat.track.uri));
+          }, []);
+        })
+        .catch(handleError);
+    })
+    .catch(handleError);
 }
 
 function postSpotifyData(link, data) {
   return fetch(link, {
     method: 'POST',
     headers: {
-      Authorization: 'Bearer ' + access_token,
+      Authorization: 'Bearer ' + access_token
     },
     body: JSON.stringify(data)
-  }).then(async (response) => {
+  }).then(async response => {
     if (response.ok) {
       return response.json();
     } else {
@@ -355,26 +376,33 @@ function postSpotifyData(link, data) {
 }
 
 function postSpotifyPlaylist(name, description) {
-  return postSpotifyData(userHref + '/playlists', { name: name, description: description + ' Created with Set Operations For Spotify available at https://tylergordonhill.com/set-operations-for-spotify' }).then((data) => {
-    return data.id;
-  }).catch(handleError);
+  return postSpotifyData(userHref + '/playlists', {
+    name: name,
+    description:
+      description +
+      ' Created with Set Operations For Spotify available at https://tylergordonhill.com/set-operations-for-spotify'
+  })
+    .then(data => {
+      return data.id;
+    })
+    .catch(handleError);
 }
 
 function postSpotifySongs(id, tracks) {
-  return new Promise((resolve) => {
-    postSpotifyData('https://api.spotify.com/v1/playlists/' + id + '/tracks', { uris: tracks.slice(0, 100) }).then((data) => {
-        const tracksLeft = tracks.slice(100);
-        if (tracksLeft.length) {
-          resolve(postSpotifySongs(id, tracksLeft));
-        } else {
-          resolve();
-        }
-        return data;
-      });
+  return new Promise(resolve => {
+    postSpotifyData('https://api.spotify.com/v1/playlists/' + id + '/tracks', {
+      uris: tracks.slice(0, 100)
+    }).then(data => {
+      const tracksLeft = tracks.slice(100);
+      if (tracksLeft.length) {
+        resolve(postSpotifySongs(id, tracksLeft));
+      } else {
+        resolve();
+      }
+      return data;
+    });
   }).catch(handleError);
 }
-
-
 
 /*Spotify run*/
 
@@ -396,22 +424,26 @@ if (code) {
   document.getElementById('login').remove();
   document.getElementById('loggedin').style.display = 'flex';
 
-  processTokenExpiration(expires_at).then(() => {
-    getUserData();
-    getUserPlaylists();
-  }).catch(handleError);
+  processTokenExpiration(expires_at)
+    .then(() => {
+      getUserData();
+      getUserPlaylists();
+    })
+    .catch(handleError);
 }
 
 //logout
-document.getElementById('logout-button').addEventListener('click', function() {
-  window.localStorage.removeItem('access_token');
-  window.localStorage.removeItem('refresh_token');
-  window.localStorage.removeItem('expires_at');
-  window.localStorage.removeItem('code_verifier');
-  window.location.reload();
-}, false);
-
-
+document.getElementById('logout-button').addEventListener(
+  'click',
+  function () {
+    window.localStorage.removeItem('access_token');
+    window.localStorage.removeItem('refresh_token');
+    window.localStorage.removeItem('expires_at');
+    window.localStorage.removeItem('code_verifier');
+    window.location.reload();
+  },
+  false
+);
 
 /* Masonry */
 
@@ -420,8 +452,15 @@ function resizeMasonryItem(item) {
     const masonry = document.getElementById('playlists');
     const rowHeight = parseInt(window.getComputedStyle(masonry).getPropertyValue('grid-auto-rows'));
     const rowGap = parseInt(window.getComputedStyle(masonry).getPropertyValue('grid-row-gap'));
-    const contentMargin = parseInt(window.getComputedStyle(item).getPropertyValue('margin-top')) + parseInt(window.getComputedStyle(item).getPropertyValue('margin-bottom'));
-    const rowSpan = Math.ceil((item.getElementsByClassName('content')[0].getBoundingClientRect().height + rowGap + contentMargin) / (rowHeight + rowGap));
+    const contentMargin =
+      parseInt(window.getComputedStyle(item).getPropertyValue('margin-top')) +
+      parseInt(window.getComputedStyle(item).getPropertyValue('margin-bottom'));
+    const rowSpan = Math.ceil(
+      (item.getElementsByClassName('content')[0].getBoundingClientRect().height +
+        rowGap +
+        contentMargin) /
+        (rowHeight + rowGap)
+    );
     item.style.gridRowEnd = 'span ' + rowSpan;
   }
 }
@@ -433,17 +472,15 @@ function resizeAllMasonryItems() {
   }
 }
 
-window.addEventListener('resize', function() {
+window.addEventListener('resize', function () {
   resizeAllMasonryItems();
 });
-
-
 
 /*Set Operation*/
 
 const playlistHolders = document.getElementsByClassName('playlistHolder');
 for (let i = 0; i < playlistHolders.length; i++) {
-  playlistHolders[i].addEventListener('click', function() {
+  playlistHolders[i].addEventListener('click', function () {
     document.getElementById('setOperation').classList.remove('clicked');
     document.getElementById('operationPicker').style.display = 'none';
     const playlistPicker = document.getElementById('playlistPicker');
@@ -459,7 +496,7 @@ for (let i = 0; i < playlistHolders.length; i++) {
   });
 }
 
-document.getElementById('setOperation').addEventListener('click', function() {
+document.getElementById('setOperation').addEventListener('click', function () {
   const playlistHolders = document.getElementsByClassName('playlistHolder');
   for (let i = 0; i < playlistHolders.length; i++) {
     playlistHolders[i].classList.remove('clicked');
@@ -477,7 +514,7 @@ document.getElementById('setOperation').addEventListener('click', function() {
 
 const operations = document.getElementsByClassName('operation');
 for (let i = 0; i < operations.length; i++) {
-  operations[i].addEventListener('click', function() {
+  operations[i].addEventListener('click', function () {
     const setOperation = document.getElementById('setOperation');
     while (setOperation.children[0]) {
       setOperation.children[0].remove();
@@ -490,53 +527,75 @@ for (let i = 0; i < operations.length; i++) {
   });
 }
 
-document.getElementById('create').addEventListener('click', async function() {
+document.getElementById('create').addEventListener('click', async function () {
   const playlist1 = document.getElementById('playlist1');
   const setOperation = document.getElementById('setOperation');
   const playlist2 = document.getElementById('playlist2');
-  if (playlist1.children[0].dataset.id && setOperation.children[0].dataset.id && playlist2.children[0].dataset.id) {
+  if (
+    playlist1.children[0].dataset.id &&
+    setOperation.children[0].dataset.id &&
+    playlist2.children[0].dataset.id
+  ) {
     const closeGettingTracks = createToast('Getting tracks', { permanent: true });
-    Promise.all([getPlaylistSongs(playlist1.children[0].dataset.id), getPlaylistSongs(playlist2.children[0].dataset.id)]).then(([tracks1, tracks2]) => {
-      closeGettingTracks();
-      let tracks = [];
-      let separator = '';
-      if (setOperation.children[0].dataset.id === 'difference') {
-        tracks = tracks1.filter(x => !tracks2.includes(x))
-        separator = '-';
-      } else if (setOperation.children[0].dataset.id === 'union') {
-        tracks = [...new Set([...tracks1, ...tracks2])];
-        separator = '∪';
-      } else {
-        tracks = tracks1.filter(x => tracks2.includes(x));
-        separator = '∩';
-      }
-      if (!tracks.length) {
-        createToast('Empty playlist!');
-      } else {
-        const closeCreatingPlaylist = createToast('Creating playlist', { permanent: true });
-        let name1 = playlist1.getElementsByClassName('title')[0].innerText;
-        let name2 = playlist2.getElementsByClassName('title')[0].innerText;
-        if (name1.includes('-') || name1.includes('∪') || name1.includes('∩')) {
-          name1 = '(' + name1 + ')';
+    Promise.all([
+      getPlaylistSongs(playlist1.children[0].dataset.id),
+      getPlaylistSongs(playlist2.children[0].dataset.id)
+    ])
+      .then(([tracks1, tracks2]) => {
+        closeGettingTracks();
+        let tracks = [];
+        let separator = '';
+        if (setOperation.children[0].dataset.id === 'difference') {
+          tracks = tracks1.filter(x => !tracks2.includes(x));
+          separator = '-';
+        } else if (setOperation.children[0].dataset.id === 'union') {
+          tracks = [...new Set([...tracks1, ...tracks2])];
+          separator = '∪';
+        } else {
+          tracks = tracks1.filter(x => tracks2.includes(x));
+          separator = '∩';
         }
-        if (name2.includes('-') || name2.includes('∪') || name2.includes('∩')) {
-          name2 = '(' + name2 + ')';
+        if (!tracks.length) {
+          createToast('Empty playlist!');
+        } else {
+          const closeCreatingPlaylist = createToast('Creating playlist', { permanent: true });
+          let name1 = playlist1.getElementsByClassName('title')[0].innerText;
+          let name2 = playlist2.getElementsByClassName('title')[0].innerText;
+          if (name1.includes('-') || name1.includes('∪') || name1.includes('∩')) {
+            name1 = '(' + name1 + ')';
+          }
+          if (name2.includes('-') || name2.includes('∪') || name2.includes('∩')) {
+            name2 = '(' + name2 + ')';
+          }
+          postSpotifyPlaylist(
+            name1 + ' ' + separator + ' ' + name2,
+            'This is a ' +
+              setOperation.children[0].dataset.id +
+              ' between ' +
+              name1 +
+              ' and ' +
+              name2 +
+              '.'
+          )
+            .then(playlist => {
+              closeCreatingPlaylist();
+              const closeAddingTracks = createToast('Adding tracks', { permanent: true });
+              postSpotifySongs(playlist, tracks)
+                .then(() => {
+                  closeAddingTracks();
+                  createToast('Done', {
+                    button: true,
+                    buttonText: 'Open',
+                    onButtonClick: function () {
+                      window.open('spotify:https://open.spotify.com/playlist/' + playlist, '_self');
+                    }
+                  });
+                })
+                .catch(handleError);
+            })
+            .catch(handleError);
         }
-        postSpotifyPlaylist(name1 + ' ' + separator + ' ' + name2, 'This is a ' + setOperation.children[0].dataset.id + ' between ' + name1 + ' and ' + name2 + '.').then((playlist) => {
-          closeCreatingPlaylist();
-          const closeAddingTracks = createToast('Adding tracks', { permanent: true });
-          postSpotifySongs(playlist, tracks).then(() => {
-            closeAddingTracks();
-            createToast('Done', {
-              button: true,
-              buttonText: 'Open',
-              onButtonClick: function() {
-                window.open('spotify:https://open.spotify.com/playlist/' + playlist, '_self');
-              },
-            });
-          }).catch(handleError);
-        }).catch(handleError);
-      }
-    }).catch(handleError);
+      })
+      .catch(handleError);
   }
 });
