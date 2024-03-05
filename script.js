@@ -18,7 +18,7 @@ function createToast(text, options) {
     onButtonClick: () => {},
     onClose: () => {}
   };
-  options = { ...defaults, ...options };
+  options = Object.assign({}, defaults, options);
 
   let div = document.createElement('div');
   div.classList.add('toast');
@@ -92,12 +92,13 @@ function generateRandomString(length) {
   return text;
 }
 
-async function generateCodeChallenge(codeVerifier) {
-  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(codeVerifier));
-  return btoa(String.fromCharCode(...new Uint8Array(digest)))
-    .replace(/=/g, '')
-    .replace(/\+/g, '-')
-    .replace(/\//g, '_');
+function generateCodeChallenge(codeVerifier) {
+  return crypto.subtle.digest('SHA-256', new TextEncoder().encode(codeVerifier)).then(digest => {
+    return btoa(String.fromCharCode(...new Uint8Array(digest)))
+      .replace(/=/g, '')
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_');
+  });
 }
 
 function generateUrlWithSearchParams(url, params) {
@@ -171,12 +172,11 @@ function handleError(error) {
   console.error(error);
 }
 
-async function addThrowErrorToFetch(response) {
-  if (response.ok) {
-    return response.json();
-  } else {
-    throw { response, error: await response.json() };
+function addThrowErrorToFetch(response) {
+  if (!response.ok) {
+    throw response.statusText;
   }
+  return response.json();
 }
 
 function processTokenResponse(data) {
@@ -232,12 +232,11 @@ function getSpotifyData(link) {
     headers: {
       Authorization: 'Bearer ' + access_token
     }
-  }).then(async response => {
-    if (response.ok) {
-      return response.json();
-    } else {
-      throw await response.json();
+  }).then(response => {
+    if (!response.ok) {
+      throw response.statusText;
     }
+    return response.json();
   });
 }
 
@@ -366,12 +365,11 @@ function postSpotifyData(link, data) {
       Authorization: 'Bearer ' + access_token
     },
     body: JSON.stringify(data)
-  }).then(async response => {
-    if (response.ok) {
-      return response.json();
-    } else {
-      throw await response.json();
+  }).then(response => {
+    if (!response.ok) {
+      throw response.statusText;
     }
+    return response.json();
   });
 }
 
@@ -527,7 +525,7 @@ for (let i = 0; i < operations.length; i++) {
   });
 }
 
-document.getElementById('create').addEventListener('click', async function () {
+document.getElementById('create').addEventListener('click', function () {
   const playlist1 = document.getElementById('playlist1');
   const setOperation = document.getElementById('setOperation');
   const playlist2 = document.getElementById('playlist2');
