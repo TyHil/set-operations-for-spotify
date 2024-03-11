@@ -16,11 +16,12 @@ function createToast(text, options) {
     button: false,
     buttonText: '',
     onButtonClick: () => {},
-    onClose: () => {}
+    onClose: () => {},
+    htmlText: false
   };
   options = Object.assign({}, defaults, options);
 
-  let div = document.createElement('div');
+  const div = document.createElement('div');
   div.classList.add('toast');
 
   function close() {
@@ -33,18 +34,22 @@ function createToast(text, options) {
     }
   }
 
-  let x = document.createElement('button');
+  const x = document.createElement('button');
   x.classList.add('close');
   x.innerHTML = '&times;';
   x.addEventListener('click', close);
   div.appendChild(x);
 
-  let p = document.createElement('p');
-  p.innerText = text;
-  div.appendChild(p);
+  if (options.htmlText) {
+    div.appendChild(text);
+  } else {
+    const p = document.createElement('p');
+    p.innerText = text;
+    div.appendChild(p);
+  }
 
   if (options.button) {
-    let undo = document.createElement('button');
+    const undo = document.createElement('button');
     undo.innerText = options.buttonText;
     undo.addEventListener('click', function () {
       options.onButtonClick();
