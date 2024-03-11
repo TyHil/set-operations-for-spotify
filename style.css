@@ -498,9 +498,8 @@ body {
   display: flex;
   flex-direction: column;
 }
-#login,
-#loggedin {
-  margin-bottom: auto;
+footer {
+  margin-top: auto;
 }
 
 /* STYLES */
