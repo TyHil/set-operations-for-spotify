@@ -1,5 +1,5 @@
 const path = '/set-operations-for-spotify/'; ////set-operations-for-spotify/
-const redirect_uri = 'https://tylergordonhill.com/set-operations-for-spotify'; /// https://tylergordonhill.com/set-operations-for-spotify
+const redirect_uri = 'http://127.0.0.1:3000/set-operations-for-spotify'; /// https://tylergordonhill.com/set-operations-for-spotify
 
 /* Tab Icon */
 
@@ -180,7 +180,6 @@ function getUserData() {
   getSpotifyData('https://api.spotify.com/v1/me')
     .then(data => {
       document.getElementById('name').innerText = 'Hi, ' + data.display_name;
-      userHref = data.href;
     })
     .catch(handleError);
 }
@@ -189,7 +188,7 @@ function getUserPlaylists(link = 'https://api.spotify.com/v1/me/playlists') {
   getSpotifyData(link)
     .then(data => {
       for (const playlistData of data.items) {
-        if (playlistData.tracks.total) {
+        if (playlistData.items.total) {
           const playlist = document.createElement('button');
           playlist.classList.add('item');
           const content = document.createElement('div');
@@ -310,7 +309,7 @@ function postSpotifyData(link, data) {
 }
 
 function postSpotifyPlaylist(name, description) {
-  return postSpotifyData(userHref + '/playlists', {
+  return postSpotifyData('https://api.spotify.com/v1/me/playlists', {
     name: name,
     description:
       description +
@@ -345,7 +344,6 @@ const client_id = '72236ba6e9d740449f9128203ad489f6';
 let access_token = window.localStorage.getItem('access_token') || null;
 let refresh_token = window.localStorage.getItem('refresh_token') || null;
 let expires_at = window.localStorage.getItem('expires_at') || null;
-let userHref = '';
 
 const args = new URLSearchParams(window.location.search);
 const code = args.get('code');
