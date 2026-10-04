@@ -53,30 +53,30 @@
   <body>
     <header>
       <h2 id="title">Set Operations for Spotify</h2>
-      <a id="byLine" href="/">Tyler Gordon Hill</a>
+      <a id="byLine" class="button large ripple" href="/">Tyler Gordon Hill</a>
     </header>
 
     <div id="login">
       <h3>Create new playlists using set operations between your playlists.</h3>
-      <button id="login-button" class="large featured">Log in with Spotify</button>
+      <button id="login-button" class="large featured ripple">Log in with Spotify</button>
     </div>
 
     <div id="loggedin">
       <div id="userHeader">
         <h3 id="name"></h3>
-        <button id="logout-button" class="large">Logout</button>
+        <button id="logout-button" class="large ripple">Logout</button>
       </div>
       <div id="setOperations">
-        <button id="playlist1" class="playlistHolder">
+        <button id="playlist1" class="playlistHolder ripple">
           <p>Click to add playlist</p>
         </button>
-        <button id="setOperation">
+        <button id="setOperation" class="ripple">
           <p>Click to choose operation</p>
         </button>
-        <button id="playlist2" class="playlistHolder" button>
+        <button id="playlist2" class="playlistHolder ripple" button>
           <p>Click to add playlist</p>
         </button>
-        <button id="create" class="large featured">Create Playlist</button>
+        <button id="create" class="large featured ripple">Create Playlist</button>
       </div>
       <div id="playlistPicker">
         <a id="spotifyLogo" href="spotify:https://open.spotify.com/" target="_blank">
@@ -86,7 +86,7 @@
           </h3>
         </a>
         <div id="playlists"></div>
-        <button id="loadMore" class="large featured">Load More</button>
+        <button id="loadMore" class="large featured ripple">Load More</button>
       </div>
       <div id="operationPicker">
         <button class="operation" data-id="difference">
@@ -140,7 +140,7 @@
         <a href="/legal/privacy-policy">Privacy Policy</a>
         <a href="/sitemap.xml">Sitemap</a>
       </div>
-      <button id="footer-theme" class="large circle">
+      <button id="footer-theme" class="large circle ripple">
         <img class="svg" src="/style-guide/footer/theme.svg" alt="Theme icon" />
       </button>
     </footer>
@@ -174,6 +174,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-analytics-compat.js"></script>
     <script src="/style-guide/script.js"></script>
+    <script src="/style-guide/inputs/script.js"></script>
     <script src="/style-guide/modal/script.js"></script>
     <script src="/style-guide/footer/script.js"></script>
     <script src="/style-guide/toast/script.js"></script>
